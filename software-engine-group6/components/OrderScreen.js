@@ -29,7 +29,7 @@ const OrderScreen = () => {
   const handlePlaceOrder = async () => {
     if (orders.length > 0) {
       const orderData = {
-         // Example User ID
+         
         items: orders,
         totalAmount: orders.reduce((sum, order) => sum + order.totalAmount, 0),
       };
