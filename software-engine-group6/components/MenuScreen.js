@@ -1,13 +1,19 @@
 import React, { useContext } from 'react';
-import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CartContext } from './CartContext';
 
+// Import images from assets folder
+import pizzaImage from '../assets/Pizza.png';
+import burgerImage from '../assets/burger.png';
+import pastaImage from '../assets/pasta.png';
+import noodlesImage from '../assets/noodles.png';
+
 const menuItems = [
-  { id: '1', name: 'Pizza', price: 8.99 },
-  { id: '2', name: 'Burger', price: 5.99 },
-  { id: '3', name: 'Pasta', price: 7.99 },
-  { id: '4', name: 'Noodles', price: 6.99 },
+  { id: '1', name: 'Pizza', price: 8.99, image: pizzaImage },
+  { id: '2', name: 'Burger', price: 5.99, image: burgerImage },
+  { id: '3', name: 'Pasta', price: 7.99, image: pastaImage },
+  { id: '4', name: 'Noodles', price: 6.99, image: noodlesImage },
   // Add more items as needed
 ];
 
@@ -28,8 +34,11 @@ const MenuScreen = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.menuItem}>
-            <Text>{item.name} - ${item.price.toFixed(2)}</Text>
-            <Button title="Add to Cart" onPress={() => handleAddToCart(item)} />
+            <Image source={item.image} style={styles.image} />
+            <View style={styles.detailsContainer}>
+              <Text>{item.name} - ${item.price.toFixed(2)}</Text>
+              <Button title="Add to Cart" onPress={() => handleAddToCart(item)} />
+            </View>
           </View>
         )}
       />
@@ -56,6 +65,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: '100%',
   },
+  image: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+  },
+  detailsContainer: {
+    flex: 1,
+  },
 });
 
 export default MenuScreen;
+
+
