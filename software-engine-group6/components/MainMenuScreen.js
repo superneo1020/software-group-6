@@ -10,7 +10,7 @@ const MainMenuScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Main Menu</Text>
       <Button title="Logout" onPress={() => navigation.navigate('Login')} />
-      <Button title="Order Food" onPress={() => navigation.navigate('Order')} />
+      <Button title="MENU" onPress={() => navigation.navigate('Menu')} />
     </View>
   );
 };
