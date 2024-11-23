@@ -1,42 +1,21 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, FlatList } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, FlatList, StyleSheet, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { CartContext } from './CartContext';
 
 const OrderScreen = () => {
-  const [item, setItem] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [totalAmount, setTotalAmount] = useState('');
-  const [orders, setOrders] = useState([]);
+  const { cart, removeFromCart, updateQuantity, getTotalAmount } = useContext(CartContext);
   const navigation = useNavigation();
 
-  const handleAddItem = () => {
-    if (item.trim() !== '' && quantity.trim() !== '') {
-      const newOrder = {
-        id: Math.random().toString(36).substr(2, 9),
-        name: item,
-        quantity: parseInt(quantity),
-        totalAmount: parseFloat(totalAmount),
-      };
-      setOrders([...orders, newOrder]);
-      setItem('');
-      setQuantity('');
-      setTotalAmount('');
-    } else {
-      Alert.alert('Error', 'Please enter valid item and quantity.');
-    }
-  };
-
-  const handlePlaceOrder = async () => {
-    if (orders.length > 0) {
+  const handlePlaceOrder = () => {
+    if (cart.length > 0) {
       const orderData = {
-         
-        items: orders,
-        totalAmount: orders.reduce((sum, order) => sum + order.totalAmount, 0),
+        items: cart,
+        totalAmount: getTotalAmount(),
       };
 
       console.log('Order Data:', orderData);
       Alert.alert('Success', 'Order placed successfully!');
-      setOrders([]);
       navigation.navigate('MainMenu');
     } else {
       Alert.alert('Error', 'Please add items to your order.');
@@ -45,39 +24,30 @@ const OrderScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Order Food</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Item"
-        value={item}
-        onChangeText={setItem}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Quantity"
-        value={quantity}
-        onChangeText={setQuantity}
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Total Amount"
-        value={totalAmount}
-        onChangeText={setTotalAmount}
-        keyboardType="numeric"
-      />
-      <Button title="Add Item" onPress={handleAddItem} />
-
+      <Text style={styles.title}>Your Cart</Text>
       <FlatList
-        data={orders}
+        data={cart}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.orderItem}>
-            <Text>{item.name} - Quantity: {item.quantity} - Amount: ${item.totalAmount.toFixed(2)}</Text>
+            <Text>{item.name} - Quantity: {item.quantity} - Amount: ${(item.price * item.quantity).toFixed(2)}</Text>
+            <View style={styles.quantityContainer}>
+              <Button title="-" onPress={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))} />
+              <TextInput
+                style={styles.quantityInput}
+                value={item.quantity.toString()}
+                onChangeText={(value) => updateQuantity(item.id, parseInt(value))}
+                keyboardType="numeric"
+              />
+              <Button title="+" onPress={() => updateQuantity(item.id, item.quantity + 1)} />
+            </View>
+            <TouchableOpacity onPress={() => removeFromCart(item.id)}>
+              <Text style={styles.deleteButton}>Delete</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
-
+      <Text style={styles.totalAmount}>Total Amount: ${getTotalAmount().toFixed(2)}</Text>
       <Button title="Place Order" onPress={handlePlaceOrder} />
     </View>
   );
@@ -94,18 +64,32 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    width: '100%',
-  },
   orderItem: {
     padding: 10,
     borderBottomColor: 'gray',
     borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quantityInput: {
+    width: 40,
+    textAlign: 'center',
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginHorizontal: 5,
+  },
+  deleteButton: {
+    color: 'red',
+  },
+  totalAmount: {
+    fontSize: 18,
+    marginVertical: 10,
   },
 });
 
