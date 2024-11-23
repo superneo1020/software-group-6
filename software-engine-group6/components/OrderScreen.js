@@ -1,48 +1,55 @@
 import React, { useContext } from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CartContext } from './CartContext';
 
-// Import images from assets folder
-import pizzaImage from '../assets/Pizza.png';
-import burgerImage from '../assets/burger.png';
-import pastaImage from '../assets/pasta.png';
-import noodlesImage from '../assets/noodles.png';
-
-const menuItems = [
-  { id: '1', name: 'Pizza', price: 8.99, image: pizzaImage },
-  { id: '2', name: 'Burger', price: 5.99, image: burgerImage },
-  { id: '3', name: 'Pasta', price: 7.99, image: pastaImage },
-  { id: '4', name: 'Noodles', price: 6.99, image: noodlesImage },
-  // Add more items as needed
-];
-
-const MenuScreen = () => {
-  const { addToCart } = useContext(CartContext);
+const OrderScreen = () => {
+  const { cart, removeFromCart, updateQuantity, getTotalAmount } = useContext(CartContext);
   const navigation = useNavigation();
 
-  const handleAddToCart = (item) => {
-    addToCart(item);
-    Alert.alert('Success', `${item.name} added to cart`);
+  const handlePlaceOrder = () => {
+    if (cart.length > 0) {
+      const orderData = {
+        items: cart,
+        totalAmount: getTotalAmount(),
+      };
+
+      console.log('Order Data:', orderData);
+      Alert.alert('Success', 'Order placed successfully!');
+      navigation.navigate('MainMenu');
+    } else {
+      Alert.alert('Error', 'Please add items to your order.');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Menu</Text>
+      <Text style={styles.title}>Your Cart</Text>
       <FlatList
-        data={menuItems}
+        data={cart}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.menuItem}>
-            <Image source={item.image} style={styles.image} />
-            <View style={styles.detailsContainer}>
-              <Text>{item.name} - ${item.price.toFixed(2)}</Text>
-              <Button title="Add to Cart" onPress={() => handleAddToCart(item)} />
+          <View style={styles.orderItem}>
+            <Text>{item.name} - Quantity: {item.quantity} - Amount: ${(item.price * item.quantity).toFixed(2)}</Text>
+            <View style={styles.quantityContainer}>
+              <Button title="-" onPress={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))} />
+              <TextInput
+                style={styles.quantityInput}
+                value={item.quantity.toString()}
+                onChangeText={(value) => updateQuantity(item.id, parseInt(value))}
+                keyboardType="numeric"
+              />
+              <Button title="+" onPress={() => updateQuantity(item.id, item.quantity + 1)} />
             </View>
+            <TouchableOpacity onPress={() => removeFromCart(item.id)}>
+              <Text style={styles.deleteButton}>Delete</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
-      <Button title="Go to Order" onPress={() => navigation.navigate('Order')} />
+      <Text style={styles.totalAmount}>Total Amount: ${getTotalAmount().toFixed(2)}</Text>
+      <Button title="Place Order" onPress={handlePlaceOrder} />
+      
     </View>
   );
 };
@@ -58,21 +65,34 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
   },
-  menuItem: {
+  orderItem: {
+    padding: 10,
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 10,
     width: '100%',
   },
-  image: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  detailsContainer: {
-    flex: 1,
+  quantityInput: {
+    width: 40,
+    textAlign: 'center',
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginHorizontal: 5,
+  },
+  deleteButton: {
+    color: 'red',
+  },
+  totalAmount: {
+    fontSize: 18,
+    marginVertical: 10,
   },
 });
 
-export default MenuScreen;
+export default OrderScreen;
+
