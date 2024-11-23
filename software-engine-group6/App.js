@@ -26,6 +26,6 @@ export default function App() {
         <Stack.Screen name="Order" component={OrderScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-    <CartProvider>
+    </CartProvider>
   );
 }
