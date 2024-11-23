@@ -7,6 +7,7 @@ const menuItems = [
   { id: '1', name: 'Pizza', price: 8.99 },
   { id: '2', name: 'Burger', price: 5.99 },
   { id: '3', name: 'Pasta', price: 7.99 },
+  { id: '4', name: 'Noodles', price: 6.99 },
   // Add more items as needed
 ];
 
