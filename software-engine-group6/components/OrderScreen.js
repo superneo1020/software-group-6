@@ -1,22 +1,36 @@
-import React, { useContext } from 'react';
-import { View, Text, FlatList, StyleSheet, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, Button, FlatList, StyleSheet, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CartContext } from './CartContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const menuItems = [
+  { id: '1', name: 'Pizza', price: 8.99, preparationTime: 15, deliveryTime: 30 },
+  { id: '2', name: 'Burger', price: 5.99, preparationTime: 10, deliveryTime: 25 },
+  { id: '3', name: 'Pasta', price: 7.99, preparationTime: 20, deliveryTime: 35 },
+  { id: '4', name: 'Noodles', price: 6.99, preparationTime: 10, deliveryTime: 25 },
+];
 
 const OrderScreen = () => {
   const { cart, removeFromCart, updateQuantity, getTotalAmount } = useContext(CartContext);
   const navigation = useNavigation();
+  const [orderStatus, setOrderStatus] = useState([]);
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (cart.length > 0) {
-      const orderData = {
-        items: cart,
-        totalAmount: getTotalAmount(),
-      };
+      const newOrderStatus = cart.map(item => ({
+        id: item.id,
+        status: 'Order Placed',
+        preparationTime: item.preparationTime,
+        deliveryTime: item.deliveryTime,
+        time: item.preparationTime + item.deliveryTime,
+      }));
 
-      console.log('Order Data:', orderData);
+      setOrderStatus(newOrderStatus);
+      await AsyncStorage.setItem('@orderStatus', JSON.stringify(newOrderStatus));
+
       Alert.alert('Success', 'Order placed successfully!');
-      navigation.navigate('MainMenu');
+      navigation.navigate('Billing');
     } else {
       Alert.alert('Error', 'Please add items to your order.');
     }
@@ -49,7 +63,6 @@ const OrderScreen = () => {
       />
       <Text style={styles.totalAmount}>Total Amount: ${getTotalAmount().toFixed(2)}</Text>
       <Button title="Place Order" onPress={handlePlaceOrder} />
-      
     </View>
   );
 };
@@ -95,4 +108,5 @@ const styles = StyleSheet.create({
 });
 
 export default OrderScreen;
+
 
