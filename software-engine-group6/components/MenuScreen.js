@@ -42,7 +42,7 @@ const MenuScreen = () => {
           </View>
         )}
       />
-      <Button title="Go to Order" onPress={() => navigation.navigate('Order')} />
+      <Button title="Go to Cart" onPress={() => navigation.navigate('Order')} />
     </View>
   );
 };
@@ -76,5 +76,3 @@ const styles = StyleSheet.create({
 });
 
 export default MenuScreen;
-
-
