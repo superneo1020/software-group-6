@@ -1,5 +1,6 @@
 # software-group-6
 >> Screen cap from snack expo (react native Platform) from demo.
+
 ![Screenshot 2024-12-02 020120](https://github.com/user-attachments/assets/fcacabbc-90d4-4bf6-9633-e86bbf353901)
 ![Screenshot 2024-12-02 020237](https://github.com/user-attachments/assets/065fb416-d61f-4e43-b3b8-a287d1d592aa)
 ![Screenshot 2024-12-02 020226](https://github.com/user-attachments/assets/78aec015-cf50-4c58-be9d-69fbaf299839)
