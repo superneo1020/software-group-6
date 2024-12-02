@@ -65,9 +65,9 @@ const BillingScreen = () => {
       <Text style={styles.paymentTitle}>Payment Options:</Text>
       {!showCardForm ? (
         <View style={styles.paymentOptions}>
-          <Button title="Pay with Visa" onPress={() => setShowCardForm(true)} />
-          <Button title="Pay with Mastercard" onPress={() => setShowCardForm(true)} />
-          <Button title="Pay with PayPal" onPress={() => setShowCardForm(true)} />
+          <Button title="Visa" onPress={() => setShowCardForm(true)} />
+          <Button title="Mastercard" onPress={() => setShowCardForm(true)} />
+          <Button title="PayPal" onPress={() => setShowCardForm(true)} />
         </View>
       ) : (
         renderCardForm()
