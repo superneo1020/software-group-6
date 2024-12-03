@@ -15,7 +15,7 @@ const OrderScreen = () => {
         id: item.id,
         status: 'Order Placed',
         preparationTime: Math.floor(Math.random() * 20) + 1, 
-        deliveryTime: Math.floor(Math.random() * 30) + 1, // this is just for demo in actuall app we use the time concurrent to delivery person gps and food prepration time of resturants 
+        deliveryTime: Math.floor(Math.random() * 30) + 1, // This is just for demo. In the actual app, we use the time concurrent to delivery person GPS and food preparation time of restaurants. 
         time: item.preparationTime + item.deliveryTime,
       }));
 
