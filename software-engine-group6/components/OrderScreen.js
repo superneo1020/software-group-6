@@ -4,13 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { CartContext } from './CartContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const menuItems = [
-  { id: '1', name: 'Pizza', price: 8.99, preparationTime: 15, deliveryTime: 30 },
-  { id: '2', name: 'Burger', price: 5.99, preparationTime: 10, deliveryTime: 25 },
-  { id: '3', name: 'Pasta', price: 7.99, preparationTime: 20, deliveryTime: 35 },
-  { id: '4', name: 'Noodles', price: 6.99, preparationTime: 10, deliveryTime: 25 },
-];
-
 const OrderScreen = () => {
   const { cart, removeFromCart, updateQuantity, getTotalAmount } = useContext(CartContext);
   const navigation = useNavigation();
@@ -21,8 +14,8 @@ const OrderScreen = () => {
       const newOrderStatus = cart.map(item => ({
         id: item.id,
         status: 'Order Placed',
-        preparationTime: item.preparationTime,
-        deliveryTime: item.deliveryTime,
+        preparationTime: Math.floor(Math.random() * 20) + 1, 
+        deliveryTime: Math.floor(Math.random() * 30) + 1, // this is just for demo in actuall app we use the time concurrent to delivery person gps and food prepration time of resturants 
         time: item.preparationTime + item.deliveryTime,
       }));
 
@@ -108,5 +101,4 @@ const styles = StyleSheet.create({
 });
 
 export default OrderScreen;
-
 
