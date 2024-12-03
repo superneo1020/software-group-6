@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { initializeOrderStatus, updateOrderStatus } from './OrderStatusUtils';
+import { CartContext } from './CartContext';
 
 const OrderTrackingScreen = () => {
   const [orderStatus, setOrderStatus] = useState([]);
+  const { cart } = useContext(CartContext);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -46,11 +47,22 @@ const OrderTrackingScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Order Tracking</Text>
       <FlatList
+        data={cart}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.orderItem}>
+            <Text>{item.name} - Quantity: {item.quantity} - Amount: ${(item.price * item.quantity).toFixed(2)}</Text>
+          </View>
+        )}
+      />
+      <FlatList
         data={orderStatus}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.orderItem}>
-            <Text>{item.status} - ETA: {item.remainingTime} minutes</Text>
+            <Text>{item.status}</Text>
+            <Text>Preparation Time: {item.preparationTime} minutes</Text>
+            <Text>Delivery Time: {item.deliveryTime} minutes</Text>
           </View>
         )}
       />
@@ -81,4 +93,3 @@ const styles = StyleSheet.create({
 });
 
 export default OrderTrackingScreen;
-
