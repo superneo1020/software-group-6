@@ -10,9 +10,13 @@ edit quantity or remove item![Screenshot 2024-12-03 212653](https://github.com/u
 payment option ![Screenshot 2024-12-03 212705](https://github.com/user-attachments/assets/913dfa67-667d-425c-9fef-9dd2ec337d4c)
 payment page ![Screenshot 2024-12-03 212719](https://github.com/user-attachments/assets/cb05cf55-b759-4159-9559-ca84d59de5dc)
 after sucess successful payment >> tracking screen show your order status after ![Screenshot 2024-12-03 212048](https://github.com/user-attachments/assets/674beba8-6489-499f-80f1-5aab8a39854a)
+>> for review 
 ![Screenshot 2024-12-02 020857](https://github.com/user-attachments/assets/cfa67338-a7ad-40db-8fe8-085f2baa38f5)
+>> order history 
 ![Screenshot 2024-12-02 020921](https://github.com/user-attachments/assets/1553100e-8be7-42bc-9351-f752072d1fcb)
+>> can add new item in menu for restaurant 
 ![Screenshot 2024-12-02 021448](https://github.com/user-attachments/assets/b06be2a9-48a1-4bbc-88f5-75f62785fbb7)
+>> can check whole day report for resturant 
 ![Screenshot 2024-12-02 021454](https://github.com/user-attachments/assets/63c7d7e0-ad20-4874-893d-a70ea064910b)
 
 
